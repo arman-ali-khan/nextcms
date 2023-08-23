@@ -177,7 +177,16 @@ app.get("/api/posts", (req, res) => {
         `SELECT * FROM sitePosts WHERE siteId = ${JSON.stringify(siteId)} AND id = ${JSON.stringify(postId)} AND publish = 1 AND aproved = 1 `,
         (error, results) => {
           if (error) throw error;
-          res.json(results[0]);
+          let sql = `UPDATE sitePosts SET ? WHERE id = ${postId}`;
+        let query = connection.query(
+          sql,
+          { view: parseInt(results[0].view) + 1 },
+          (err, update) => {
+            if (err) throw err;
+            res.json(results[0]);
+          }
+        );
+          
         }
       );
   })
