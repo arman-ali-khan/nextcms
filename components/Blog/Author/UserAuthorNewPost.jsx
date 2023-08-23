@@ -103,6 +103,9 @@ const UserAuthorNewPost = () => {
   // photo upload error
   const [error, setError] = useState("");
 
+    // confirm
+    const [unsavedChanges,useUnsavedChange] = useState(false) 
+
   // handle upload
   const handlePhotoUpload = (data) => {
     const photo = data;
@@ -185,6 +188,7 @@ const isoString = now.toISOString();
       .post(`${process.env.NEXT_PUBLIC_LOCAL}/api/posts`, postData)
       .then((res) => {
         setPostLoading(false);
+        useUnsavedChange(false)
         setPublishBtn("Published");
         // router.push(`/user/${dbUser.username}`);
       })
@@ -199,8 +203,7 @@ const isoString = now.toISOString();
       });
   };
 
-  // confirm
-  const [unsavedChanges,useUnsavedChange] = useState(false) 
+
   // chenge body
 const handleChengeBody = () =>{
   useUnsavedChange(true)

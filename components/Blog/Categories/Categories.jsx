@@ -13,7 +13,7 @@ const Categories = () => {
   },[])
   return (
     <div className="bg-base-100 text-black p-1">
-      <div class="bg-white">
+      <div className="bg-white">
         <h2 className="w-full py-1 bg-[#f5f5f5] border-b border-[#ddd] font-bold text-black p-2">
           Categories
         </h2>

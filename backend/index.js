@@ -117,6 +117,7 @@ app.get("/api/loginuser", (req, res) => {
 // Read site uid
 app.get("/api/site", (req, res) => {
   const id = req.query.uid;
+  console.log(id)
   connection.query(
     `SELECT * FROM sites WHERE uid = ${JSON.stringify(id)}`,
     (error, results) => {

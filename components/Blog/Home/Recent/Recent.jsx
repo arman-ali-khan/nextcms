@@ -20,7 +20,7 @@ const Recent = () => {
   return (
     <div>
       <div className="bg-base-100 text-black p-1">
-        <div class="bg-white">
+        <div className="bg-white">
           <h2 className="w-full py-1 bg-[#f5f5f5] border-b border-[#ddd] font-bold text-black p-2">
             Recent Posts
           </h2>
@@ -41,7 +41,7 @@ const Recent = () => {
             1 of 13,022
           </span>
           {[...Array(5).keys()].map((item, i) => (
-            <button className="px-2 border-gray-400 border hover:border-black duration-200 bg-white">
+            <button key={i} className="px-2 border-gray-400 border hover:border-black duration-200 bg-white">
               {i + 1}
             </button>
           ))}

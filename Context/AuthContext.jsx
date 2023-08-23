@@ -52,19 +52,22 @@ const logOut = ()=>{
 
     // get params
     const siteParams = router.query.siteId
- 
+ // site loading
+ const [siteLoading,setSiteLoading] = useState(true)
     const siteUid = siteParams
     // get uid
     const [siteId,setSiteId] = useState({})
     useEffect(()=>{
        if(siteUid){
+        setSiteLoading(false)
         axios.get(`${process.env.NEXT_PUBLIC_LOCAL}/api/site?uid=${siteUid}`)
         .then(res=>{
             setSiteId(res.data)
+            setSiteLoading(false)
         })
        }
-    },[siteParams])
-
+    },[siteParams,router.query])
+console.log(siteId)
     // get site user
     const [siteUser,setSiteUser] = useState({})
 
@@ -87,7 +90,7 @@ const logOut = ()=>{
         })
        }
     },[cookieEmail])
-    const value = {user,createUser,logOut,siteId,siteUser,loginUser,userLoading}
+    const value = {user,createUser,logOut,siteLoading,siteId,siteUser,loginUser,userLoading}
     return (
         <UserContext.Provider value={value}>
             {children}

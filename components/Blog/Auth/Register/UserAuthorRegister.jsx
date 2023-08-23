@@ -103,7 +103,7 @@ const UserAuthorRegister = () => {
           </div>
           <div className="text-black py-2">
             Already have an account?{" "}
-            <Link className="text-neutral underline" href={"auth/login"}>
+            <Link className="text-neutral underline" href={`/${siteId.uid}/auth/login`}>
               Login
             </Link>
           </div>

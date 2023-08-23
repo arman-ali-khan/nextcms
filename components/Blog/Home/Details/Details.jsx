@@ -8,7 +8,7 @@ import Comments from "./Comments";
 
 const Details = ({ blog }) => {
   const { user , siteId} = useContext(UserContext);
-
+const categories = JSON.parse(blog.categories)
   return (
     <div className="p-1">
       <div>
@@ -21,22 +21,23 @@ const Details = ({ blog }) => {
             <span>»</span>
             <Link
               className="text-info"
-              href={`/${siteId?.uid}/category/${blog.categories[0].value}`}
+              href={`/${siteId?.uid}/category/${categories[0].value}`}
             >
               {" "}
-              {blog.categories[0].label}
+              {categories[0].label}
             </Link>
             <span>»</span>
             <p className="inline">{blog?.title}</p>
           </div>
           {/* Body */}
           <div className="bg-base-100 text-black p-1">
-            <div class="bg-white">
+            <div className="bg-white">
               <h2 className="w-full py-1 bg-[#f5f5f5] border-b border-[#ddd] font-bold text-black p-2">
                 {blog.title}
               </h2>
               <div className="p-1">{parse(JSON.parse(blog.body))}</div>
               <h2 className="w-full text-sm bg-[#f5f5f5] border-b border-[#ddd] py-4 text-black p-2">
+              <time dateTime={blog.date} suppressHydrationWarning />
                 {moment(blog.date).fromNow()} ({moment(blog.date).format("LL")})
               </h2>
             </div>

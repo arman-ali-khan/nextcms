@@ -108,7 +108,7 @@ const cryptr = new Cryptr('myTotallySecretKey');
           </div>
           <div className="text-black py-2">
             Don't have an account?{" "}
-            <Link className="text-neutral underline" href={"auth/register"}>
+            <Link className="text-neutral underline" href={`/${siteId.uid}/auth/register`}>
               Register
             </Link>
           </div>

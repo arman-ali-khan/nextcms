@@ -32,8 +32,8 @@ const Card = ({post}) => {
                   0 Comments
                 </Link>
               </p>
-              <div class="post-views post-751138 entry-meta">
-                <span class="post-views-count">{post?.view}</span>
+              <div className="post-views post-751138 entry-meta">
+                <span className="post-views-count">{post?.view}</span>
               </div>
             </div>
           </div>
