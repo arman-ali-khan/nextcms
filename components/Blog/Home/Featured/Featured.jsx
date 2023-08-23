@@ -22,7 +22,12 @@ const Featured = () => {
           Featured Post
         </h2>
         <ul>
-         <Card post={featured} />
+          {
+            featured ? 
+            <Card post={featured} />
+            :
+            'No Data'
+          }
         </ul>
       </div>
     </div>

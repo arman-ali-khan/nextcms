@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mysql = require("mysql2");
 const passwordHash = require("password-hash");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const port = 5000;
@@ -12,12 +13,14 @@ app.use(cors());
 // Middleware
 app.use(bodyParser.json());
 
+
+
 // MySQL connection
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "admin",
-  password: "@Samrat726728",
-  database: "blogcms",
+  host: process.env.HOST,
+  user: process.env.USER_NAME,
+  password: process.env.PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 connection.connect();
@@ -248,3 +251,4 @@ app.get("/api/posts", (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+module.exports = app;

@@ -1,5 +1,5 @@
-import UserLayout from "@/Layout/User/UserLayout";
 import axios from "axios";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -18,8 +18,10 @@ function Error404() {
      }
   },[siteParams])
   return (
-    <UserLayout title={"404 Page Not Found"}>
       <section class="bg-base-100">
+       <Head>
+       <title>404 Page Not Found</title>
+       </Head>
         <div class="container min-h-screen px-6 py-12 mx-auto lg:flex lg:items-center lg:gap-12">
           <div class="relative w-full mt-12 lg:w-1/2 lg:mt-0">
             <img
@@ -48,7 +50,6 @@ function Error404() {
           </div>
         </div>
       </section>
-    </UserLayout>
   );
 }
 

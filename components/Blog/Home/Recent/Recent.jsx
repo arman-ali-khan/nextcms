@@ -25,9 +25,12 @@ const Recent = () => {
             Recent Posts
           </h2>
           <ul>
-            {posts.map((post, i) => (
+            { posts?.length ? posts.map((post, i) => (
               <Card post={post} key={i} />
-            ))}
+            ))
+            :
+            'No Data'
+          }
           </ul>
         </div>
       </div>

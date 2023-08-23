@@ -21,10 +21,7 @@ const cryptr = new Cryptr('myTotallySecretKey');
   const { user, loginUser,siteId } = useContext(UserContext);
   // loading
   const [loading, setLoading] = useState(false);
-  // redirect when login
-  if (user?.email) {
-    router.push("/");
-  }
+  
   // btn text
   const [btnText, setBtnText] = useState("Login");
   // login error

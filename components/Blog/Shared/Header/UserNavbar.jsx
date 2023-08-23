@@ -16,7 +16,7 @@ const UserNavbar = () => {
                 {/* Logo */}
                <div className="h-10 w-44">
                 <Link href={`/${siteId?.uid}`}>
-               <img className="w-44 h-10" src="https://trickbd.com/wp-content/uploads/2022/01/23/logo.png" alt="" />
+               <img className="w-44 h-10" src="https://blog.arman.top/favicon.svg" alt="" />
                 </Link>
                </div>
                {/* Login Btn */}

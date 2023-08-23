@@ -23,8 +23,10 @@ const Popular = () => {
           Popular Post
         </h2>
         <ul>
-            {
-            popular.map((post,i)=><Card post={post} key={i} />)
+            { popular?.length ?
+            popular?.map((post,i)=><Card post={post} key={i} />)
+            :
+            'No Data'
             }
         </ul>
       </div>

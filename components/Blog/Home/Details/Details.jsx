@@ -8,7 +8,7 @@ import Comments from "./Comments";
 
 const Details = ({ blog }) => {
   const { user , siteId} = useContext(UserContext);
-  console.log(blog);
+
   return (
     <div className="p-1">
       <div>
@@ -35,7 +35,7 @@ const Details = ({ blog }) => {
               <h2 className="w-full py-1 bg-[#f5f5f5] border-b border-[#ddd] font-bold text-black p-2">
                 {blog.title}
               </h2>
-              <div className="p-1">{parse(blog.body)}</div>
+              <div className="p-1">{parse(JSON.parse(blog.body))}</div>
               <h2 className="w-full text-sm bg-[#f5f5f5] border-b border-[#ddd] py-4 text-black p-2">
                 {moment(blog.date).fromNow()} ({moment(blog.date).format("LL")})
               </h2>

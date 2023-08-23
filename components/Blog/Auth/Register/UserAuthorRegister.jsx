@@ -2,6 +2,7 @@ import { useContext } from "react";
 
 import { UserContext } from "@/Context/AuthContext";
 import axios from "axios";
+import Cryptr from "cryptr";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,15 +15,15 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 const UserAuthorRegister = () => {
 
  const router = useRouter();
+
+ const cryptr = new Cryptr('myTotallySecretKey');
   // context
   const { createUser, user,siteId } = useContext(UserContext);
   
   // error
   const [registerError, setRegisterError] = useState("");
   // redirect when register
-  if (user?.email) {
-    router.push("/");
-  }
+ 
   // loading
   const [loading, setLoading] = useState(false);
 
@@ -53,13 +54,14 @@ const UserAuthorRegister = () => {
               setRegisterBtn("Account created!");
                   if(res.status===200){
                     console.log(res)
-                    Cookies.set('email', email, { expires: 7 })
+                    Cookies.set('email',cryptr.encrypt(email))
                     if(Cookies.get('email')===email){
                       router.push(`/${siteId?.uid}`)
                     }
                   }
             }).catch(err=>{
-              toast.error(err.response.data.message)
+              console.log(err)
+              toast.error(err.message)
               setRegisterBtn('Try Again')
             })
   };

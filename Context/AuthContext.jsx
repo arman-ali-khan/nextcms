@@ -76,7 +76,7 @@ const logOut = ()=>{
         
        if(cookieEmail){
         setUserLoading(true)
-        axios.get(`${process.env.NEXT_PUBLIC_LOCAL}/api/siteuser?email=${cryptr.decrypt(cookieEmail)}`)
+        axios.get(`${process.env.NEXT_PUBLIC_LOCAL}/api/siteuser?email=${cryptr?.decrypt(cookieEmail)}`)
         .then(res=>{
             setSiteUser(res.data)
             setUserLoading(false)
