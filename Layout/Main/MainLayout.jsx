@@ -1,7 +1,10 @@
+import { UserContext } from "@/Context/AuthContext";
 import MainNavbar from "@/components/Main/Shared/MainNavbar";
 import Head from "next/head";
+import { useContext } from "react";
 
 const MainLayout = ({children,title,desc,thumb}) => {
+  const { userLoading,siteUser,siteId } = useContext(UserContext);
     return (
         <div>
         <Head>

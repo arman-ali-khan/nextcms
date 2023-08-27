@@ -9,12 +9,12 @@ const Featured = () => {
   const [featured,setFeatured] = useState({})
   // get all Featured post
   useEffect(()=>{
-    if (siteId?.uid) {
-    axios.get(`http://localhost:5000/api/featured?id=${siteId?.uid}`)
+    if (siteId?.siteurl) {
+    axios.get(`http://localhost:5000/api/featured?id=${siteId?.siteurl}`)
     .then(res=>{
       setFeatured(res.data)
     })}
-  },[siteId?.uid])
+  },[siteId?.siteurl])
   return (
     <div className="bg-base-100 text-black p-1">
       <div className="bg-white">

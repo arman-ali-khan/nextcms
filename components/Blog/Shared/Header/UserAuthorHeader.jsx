@@ -9,13 +9,13 @@ const UserAuthorHeader = () => {
             <div>
                 <ul className='flex items-center'>
                     <li className='w-full flex justify-center text-center'>
-                        <Link className='py-1 inline-block w-full hover:bg-black' href={`/${siteId?.uid}/dashboard`}>Dashboard</Link>
+                        <Link className='py-1 inline-block w-full hover:bg-black' href={`/${siteId?.siteurl}/dashboard`}>Dashboard</Link>
                     </li>
                     <li className='w-full flex justify-center text-center'>
-                        <Link className='py-1 inline-block w-full hover:bg-black' href={`/${siteId?.uid}/profile`}>Profile</Link>
+                        <Link className='py-1 inline-block w-full hover:bg-black' href={`/${siteId?.siteurl}/profile`}>Profile</Link>
                     </li>
                     <li className='w-full flex justify-center text-center'>
-                        <Link className='py-1 inline-block w-full hover:bg-black' href={`/${siteId?.uid}/new-post`}>New Post</Link>
+                        <Link className='py-1 inline-block w-full hover:bg-black' href={`/${siteId?.siteurl}/new-post`}>New Post</Link>
                     </li>
                 </ul>
             </div>

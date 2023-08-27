@@ -12,7 +12,7 @@ const CategoryCard = ({category}) => {
           <div className="leading-5 text-sm">
             <Link
               className="text-info hover:underline "
-              href={`/${siteId?.uid}/category/${category.value}`}
+              href={`/${siteId?.siteurl}/category/${category.value}`}
             >
              {category.label}
             </Link>{' '}(10)

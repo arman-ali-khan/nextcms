@@ -32,6 +32,7 @@ const UserAuthorRegister = () => {
   const [showPass, setShowPass] = useState(false);
 
   const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
 
   const handleRegisterUser = () => {
@@ -103,7 +104,7 @@ const UserAuthorRegister = () => {
           </div>
           <div className="text-black py-2">
             Already have an account?{" "}
-            <Link className="text-neutral underline" href={`/${siteId.uid}/auth/login`}>
+            <Link className="text-neutral underline" href={`/${siteId?.siteurl}/auth/login`}>
               Login
             </Link>
           </div>

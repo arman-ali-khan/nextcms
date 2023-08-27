@@ -18,7 +18,7 @@ const Card = ({post}) => {
           <div className="leading-5 text-sm">
             <Link
              className="text-info hover:underline "
-             href={`${siteId?.uid}/blog/${post?.id}`}
+             href={`${siteId?.siteurl}/blog/${post?.id}`}
            >
               {post?.title}
             </Link>

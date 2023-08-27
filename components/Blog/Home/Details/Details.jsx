@@ -15,13 +15,13 @@ const categories = JSON.parse(blog.categories)
         <div>
           {/* Title */}
           <div className="gap-1 space-x-1 text-sm p-1 px-2 bg-white">
-            <Link className="text-info" href={`/${siteId?.uid}`}>
+            <Link className="text-info" href={`/${siteId?.siteurl}`}>
               Home
             </Link>
             <span>»</span>
             <Link
               className="text-info"
-              href={`/${siteId?.uid}/category/${categories[0].value}`}
+              href={`/${siteId?.siteurl}/category/${categories[0].value}`}
             >
               {" "}
               {categories[0].label}

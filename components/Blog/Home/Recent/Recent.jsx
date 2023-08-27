@@ -9,14 +9,14 @@ const Recent = () => {
   const [posts, setPosts] = useState([]);
   // get all popular post
   useEffect(() => {
-    if (siteId?.uid) {
+    if (siteId?.siteurl) {
       axios
-        .get(`${process.env.NEXT_PUBLIC_LOCAL}/api/posts?id=${siteId?.uid}`)
+        .get(`${process.env.NEXT_PUBLIC_LOCAL}/api/posts?id=${siteId?.siteurl}`)
         .then((res) => {
           setPosts(res.data);
         });
     }
-  }, [siteId?.uid]);
+  }, [siteId?.siteurl]);
   return (
     <div>
       <div className="bg-base-100 text-black p-1">

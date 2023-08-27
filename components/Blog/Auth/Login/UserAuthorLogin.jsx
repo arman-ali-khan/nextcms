@@ -50,7 +50,7 @@ const cryptr = new Cryptr('myTotallySecretKey');
         setLoginError("");
         setBtnText("Login Success");
         Cookies.set('email',cryptr.encrypt(res?.data?.email))
-        router.push(`/${siteId?.uid}`)
+        router.push(`/${siteId?.siteurl}`)
       })
       .catch((err) => {
         setLoading(false);
@@ -108,7 +108,7 @@ const cryptr = new Cryptr('myTotallySecretKey');
           </div>
           <div className="text-black py-2">
             Don't have an account?{" "}
-            <Link className="text-neutral underline" href={`/${siteId.uid}/auth/register`}>
+            <Link className="text-neutral underline" href={`/${siteId?.siteurl}/auth/register`}>
               Register
             </Link>
           </div>

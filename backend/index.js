@@ -13,8 +13,6 @@ app.use(cors());
 // Middleware
 app.use(bodyParser.json());
 
-
-
 // MySQL connection
 const connection = mysql.createConnection({
   host: process.env.HOST,
@@ -31,23 +29,41 @@ connection.connect();
 app.post("/api/users", (req, res) => {
   const user = req.body;
   console.log(req.body);
-
+  // create main user
   connection.query("INSERT INTO users SET ?", user, (error, results) => {
     if (error) throw error;
     if (results) {
+      // create site id
       connection.query(
         "INSERT INTO sites SET ?",
-        { uid: user.uid, date: user.createdAt, name: "" },
+        {
+          uid: user.uid,
+          date: user.createdAt,
+          name: "",
+          siteurl: user.siteurl,
+        },
         (error, siteResult) => {
           if (error) throw error;
-          res.json(results);
+          // Create admin own site
+          connection.query(
+            "INSERT INTO siteusers SET ?",
+            {
+              email: user.email,
+              password: user.password,
+              date: user.createdAt,
+              type:'admin',
+              uid:user.uid,
+            },
+            (error, userResult) => {
+              if (error) throw error;
+              res.json(results);
+            }
+          );
         }
       );
     }
   });
 });
-
-
 
 // Create Site Users
 app.post("/api/siteUsers", (req, res) => {
@@ -88,6 +104,19 @@ app.get("/api/siteuser", (req, res) => {
   );
 });
 
+// get site for register
+
+app.get("/api/getsiteurl", (req, res) => {
+  const { siteurl } = req.query;
+  console.log(siteurl);
+  connection.query(
+    `SELECT * FROM sites WHERE siteurl = ${JSON.stringify(siteurl)}`,
+    (error, results) => {
+      if (error) throw error;
+      res.json(results);
+    }
+  );
+});
 // site user login
 
 app.get("/api/loginuser", (req, res) => {
@@ -117,9 +146,9 @@ app.get("/api/loginuser", (req, res) => {
 // Read site uid
 app.get("/api/site", (req, res) => {
   const id = req.query.uid;
-  console.log(id)
+  console.log(id);
   connection.query(
-    `SELECT * FROM sites WHERE uid = ${JSON.stringify(id)}`,
+    `SELECT * FROM sites WHERE siteurl = ${JSON.stringify(id)}`,
     (error, results) => {
       if (error) throw error;
       res.json(results[0]);
@@ -131,100 +160,111 @@ app.get("/api/site", (req, res) => {
 // POST
 // create site post
 app.post("/api/posts", (req, res) => {
-    const post = req.body
-    const siteId = req.body.siteId;
-    connection.query(`SELECT * FROM sites WHERE uid = ${JSON.stringify(siteId)}`,
-      (error, results) => {
-        if (error) throw error;
-       if(results.length){
-          connection.query("INSERT INTO sitePosts SET ?", post, (error, results) => {
-              if (error) throw error;
-              if (results) {
-                res.send(results);
-              } else {
-                return res.status(401).send({ message: "Error While Posting" });
-              }
-          });
-      }else{
-           return res.status(401).send({ message: "Site ID Not Found" });
-       }
+  const post = req.body;
+  const siteId = req.body.siteId;
+  connection.query(
+    `SELECT * FROM sites WHERE uid = ${JSON.stringify(siteId)}`,
+    (error, results) => {
+      if (error) throw error;
+      if (results.length) {
+        connection.query(
+          "INSERT INTO sitePosts SET ?",
+          post,
+          (error, results) => {
+            if (error) throw error;
+            if (results) {
+              res.send(results);
+            } else {
+              return res.status(401).send({ message: "Error While Posting" });
+            }
+          }
+        );
+      } else {
+        return res.status(401).send({ message: "Site ID Not Found" });
       }
-    );
-   
-  });
+    }
+  );
+});
 
-  //===============
-
-
+//===============
 
 //   =====================
 // get all posts
 app.get("/api/posts", (req, res) => {
-    let limit = parseInt(req.query.limit) || 100; // number of records per page
-    let offset = (parseInt(req.query.page) - 1) * limit || 0; // start index
-    let sort = req.query.sort  || 'DESC'; // Sort by Descri
-    const siteId = req.query.id 
-    connection.query(
-      `SELECT * FROM sitePosts  WHERE siteId = ${JSON.stringify(siteId)} AND publish = 1 AND aproved = 1  ORDER BY date ${sort} LIMIT ${limit} OFFSET ${offset} `,
-      (error, results) => {
-        if (error) throw error;
-        res.json(results);
-      }
-    );
-  });
+  let limit = parseInt(req.query.limit) || 100; // number of records per page
+  let offset = (parseInt(req.query.page) - 1) * limit || 0; // start index
+  let sort = req.query.sort || "DESC"; // Sort by Descri
+  const siteId = req.query.id;
+  connection.query(
+    `SELECT * FROM sitePosts  WHERE siteurl = ${JSON.stringify(
+      siteId
+    )} AND publish = 1 AND aproved = 1  ORDER BY date ${sort} LIMIT ${limit} OFFSET ${offset} `,
+    (error, results) => {
+      if (error) throw error;
+      res.json(results);
+    }
+  );
+});
 
-  // get post by id 
-  app.get('/api/post',(req,res)=>{
-    const postId = req.query.postId // get post id
-    const siteId = req.query.id // get site id
-    connection.query(
-        `SELECT * FROM sitePosts WHERE siteId = ${JSON.stringify(siteId)} AND id = ${JSON.stringify(postId)} AND publish = 1 AND aproved = 1 `,
-        (error, results) => {
-          if (error) throw error;
-          let sql = `UPDATE sitePosts SET ? WHERE id = ${postId}`;
-        let query = connection.query(
-          sql,
-          { view: parseInt(results[0].view) + 1 },
-          (err, update) => {
-            if (err) throw err;
-            res.json(results[0]);
-          }
-        );
-          
+// get post by id
+app.get("/api/post", (req, res) => {
+  const postId = req.query.postId; // get post id
+  const siteId = req.query.id; // get site id
+  console.log(siteId)
+  connection.query(
+    `SELECT * FROM sitePosts WHERE siteurl = ${JSON.stringify(
+      siteId
+    )} AND id = ${JSON.stringify(postId)} AND publish = 1 AND aproved = 1 `,
+    (error, results) => {
+      if (error) throw error;
+      let sql = `UPDATE sitePosts SET ? WHERE id = ${postId}`;
+      let query = connection.query(
+        sql,
+        { view: parseInt(results[0].view) + 1 },
+        (err, update) => {
+          if (err) throw err;
+          res.json(results[0]); 
         }
       );
-  })
+    }
+  );
+});
 
-  // get featured post
-  app.get('/api/featured',(req,res)=>{
-    const siteId = req.query.id // find by id
-    console.log(siteId)
-    connection.query(`SELECT * FROM sitePosts WHERE siteId =  ${JSON.stringify(siteId)} AND featured = 1 AND publish = 1 AND aproved = 1`, 
+// get featured post
+app.get("/api/featured", (req, res) => {
+  const siteId = req.query.id; // find by id
+  console.log(siteId);
+  connection.query(
+    `SELECT * FROM sitePosts WHERE siteurl =  ${JSON.stringify(
+      siteId
+    )} AND featured = 1 AND publish = 1 AND aproved = 1`,
     (error, results) => {
-        if (error) throw error;
-        res.json(results[0]);
-      })
-  })
+      if (error) throw error;
+      res.json(results[0]);
+    }
+  );
+});
 
-  
-
-  // get popular
-  app.get("/api/popular", (req, res) => {
-    const sort = req.query.sort || "DESC" // sort by desc
-    const siteId = req.query.id 
-    connection.query(
-      `SELECT * FROM sitePosts WHERE siteId = ${JSON.stringify(siteId)} AND publish = 1 AND aproved = 1 AND createdAt >= NOW() - INTERVAL 7 DAY ORDER BY view ${sort}
+// get popular
+app.get("/api/popular", (req, res) => {
+  const sort = req.query.sort || "DESC"; // sort by desc
+  const siteId = req.query.id;
+  console.log(siteId)
+  connection.query(
+    `SELECT * FROM sitePosts WHERE siteurl = ${JSON.stringify(
+      siteId
+    )} AND publish = 1 AND aproved = 1 AND createdAt >= NOW() - INTERVAL 7 DAY ORDER BY view ${sort}
       LIMIT 5 `,
-      (error, results) => {
-        if (error) {
-          console.error(error);
-          res.status(500).json({ error: "An error occurred" });
-          return;
-        }
-        res.send(results);
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred" });
+        return;
       }
-    );
-  });
+      res.send(results);
+    }
+  );
+});
 
 // Update
 // app.put("/items/:id", (req, res) => {

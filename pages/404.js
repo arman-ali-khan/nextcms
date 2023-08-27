@@ -9,7 +9,7 @@ function Error404() {
     // get uid from url
     const siteParams = router.asPath.split('/')[1]
   const [siteId,setSiteId] = useState({})
-  console.log(siteId)
+  console.log(siteParams)
   // siteloading
   const [siteLoading,setSiteLoading] = useState(true)
   useEffect(()=>{
@@ -46,7 +46,7 @@ function Error404() {
           {
             siteLoading ? 'Loading...'
             :
-             <Link href={`/${siteId?.uid}`}>
+             <Link href={`/${siteId?.siteurl}`}>
               <div className="flex items-center mt-6 gap-x-3">
                 {" "}
                 <button className="w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">

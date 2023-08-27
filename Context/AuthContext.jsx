@@ -1,3 +1,4 @@
+import Loader from '@/components/Blog/Loader/Loader';
 import axios from 'axios';
 import Cryptr from 'cryptr';
 import { getApp, getApps } from 'firebase/app';
@@ -24,6 +25,8 @@ const cryptr = new Cryptr('myTotallySecretKey');
 
 // userLoading
 const [userLoading,setUserLoading] = useState(true)
+// main user loading
+const [mainUserLoading,setMainUserLoading] = useState(true)
 
 // create user  
 const createUser = (email,password)=>{
@@ -39,14 +42,14 @@ const logOut = ()=>{
 }
     // get user
     useEffect(()=>{
-        setUserLoading(true)
+        setMainUserLoading(true)
         const unsubscribe = onAuthStateChanged(auth,(currentUser)=>{
             setUser(currentUser)
-            setUserLoading(false)
+            setMainUserLoading(false)
         })
         return ()=>{ 
             unsubscribe()
-            setUserLoading(false)
+            setMainUserLoading(false)
         };
     },[])
 
@@ -55,19 +58,7 @@ const logOut = ()=>{
  // site loading
  const [siteLoading,setSiteLoading] = useState(true)
     const siteUid = siteParams
-    // get uid
-    const [siteId,setSiteId] = useState({})
-    useEffect(()=>{
-       if(siteUid){
-        setSiteLoading(false)
-        axios.get(`${process.env.NEXT_PUBLIC_LOCAL}/api/site?uid=${siteUid}`)
-        .then(res=>{
-            setSiteId(res.data)
-            setSiteLoading(false)
-        })
-       }
-    },[siteUid])
-console.log(siteId)
+  
     // get site user
     const [siteUser,setSiteUser] = useState({})
 
@@ -90,10 +81,33 @@ console.log(siteId)
         })
        }
     },[cookieEmail])
-    const value = {user,createUser,logOut,siteLoading,siteId,siteUser,loginUser,userLoading}
+
+
+// get router
+const getSiteParams = router.query.siteId
+
+
+  // get uid
+  const [siteId,setSiteId] = useState({})
+  useEffect(()=>{
+     if(user?.email){
+      setSiteLoading(false)
+      axios.get(`${process.env.NEXT_PUBLIC_LOCAL}/api/site?uid=${getSiteParams}`)
+      .then(res=>{
+          setSiteId(res.data)
+          setSiteLoading(false)
+      })
+     }
+  },[siteUid,user?.uid])
+
+
+
+
+
+    const value = {user,createUser,logOut,siteLoading,siteId,siteUser,mainUserLoading,loginUser,userLoading}
     return (
         <UserContext.Provider value={value}>
-            {children}
+            {mainUserLoading ? <Loader />:children}
         </UserContext.Provider>
     );
 };

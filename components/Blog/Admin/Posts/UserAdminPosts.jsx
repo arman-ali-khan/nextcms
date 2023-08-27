@@ -1,11 +1,10 @@
 import { UserContext } from "@/Context/AuthContext";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import Card from "../Card/Card";
+import UserAdminPostsCard from "./UserAdminPostsCard";
 
-
-const Popular = () => {
-  // context
+const UserAdminPosts = () => {
+      // context
   const {siteId} = useContext(UserContext)
   const [popular,setPopular] = useState([])
   // get all popular post
@@ -16,22 +15,22 @@ const Popular = () => {
       setPopular(res.data)
     })}
   },[siteId?.siteurl])
-  return (
-    <div className="bg-base-100 text-black p-1">
-      <div className="bg-white">
+    return (
+        <div>
+           <div className="bg-white">
         <h2 className="w-full py-1 bg-[#f5f5f5] border-b border-[#ddd] font-bold text-black p-2">
-          Popular Post
+          All Posts
         </h2>
         <ul>
             { popular?.length ?
-            popular?.map((post,i)=><Card post={post} key={i} />)
+            popular?.map((post,i)=><UserAdminPostsCard post={post} key={i} />)
             :
             'No Data'
             }
         </ul>
       </div>
-    </div>
-  );
+        </div>
+    );
 };
 
-export default Popular;
+export default UserAdminPosts;

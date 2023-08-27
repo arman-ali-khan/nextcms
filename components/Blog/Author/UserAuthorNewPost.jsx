@@ -182,7 +182,8 @@ const isoString = now.toISOString();
       tags: postTitle.split(' ').join(','),
       siteId: siteId.uid,
       publish:1,
-      aproved:1
+      aproved:1,
+      siteurl:siteId.siteurl
     };
     axios
       .post(`${process.env.NEXT_PUBLIC_LOCAL}/api/posts`, postData)

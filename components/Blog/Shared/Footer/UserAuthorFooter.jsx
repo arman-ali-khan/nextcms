@@ -5,13 +5,14 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 
 const UserAuthorFooter = () => {
-  const {user,logOut,siteUser} = useContext(UserContext)
+  const {user,logOut,siteId,siteUser} = useContext(UserContext)
 
   // get router
   const router = useRouter()
   return (
-    <div className=" px-4 bg-accent  text-base-100 text-sm py-3">
+    <div className="container mx-auto relative px-4 bg-accent  text-base-100 text-sm py-3">
       <div className="flex justify-between w-full">
+     
         <ul>
           <li>
             <Link className="pt-1 inline-block" href={"#"}>
