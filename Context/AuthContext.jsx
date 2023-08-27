@@ -66,7 +66,7 @@ const logOut = ()=>{
             setSiteLoading(false)
         })
        }
-    },[siteParams,router.query])
+    },[siteUid])
 console.log(siteId)
     // get site user
     const [siteUser,setSiteUser] = useState({})
