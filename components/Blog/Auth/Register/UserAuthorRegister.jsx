@@ -49,15 +49,15 @@ const UserAuthorRegister = () => {
           date: new Date(),
         }
           axios
-            .post(`${process.env.NEXT_PUBLIC_LOCAL}/api/siteUsers`, info)
+            .post(`${process.env.NEXT_PUBLIC_LOCAL}/api/siteUsers`, {...info,siteurl:siteId.siteurl,uid:siteId.uid})
             .then((res) => {
               setLoading(false);
               setRegisterBtn("Account created!");
                   if(res.status===200){
                     console.log(res)
                     Cookies.set('email',cryptr.encrypt(email))
-                    if(Cookies.get('email')===email){
-                      router.push(`/${siteId?.uid}`)
+                    if(Cookies.get('email')){
+                      router.push(`/${siteId?.siteurl}`)
                     }
                   }
             }).catch(err=>{

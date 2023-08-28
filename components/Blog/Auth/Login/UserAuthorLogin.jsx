@@ -18,7 +18,7 @@ const cryptr = new Cryptr('myTotallySecretKey');
   const page = router.query.page;
   const next = router.query.next;
   // context
-  const { user, loginUser,siteId } = useContext(UserContext);
+  const { user, loginUser,siteId ,userId} = useContext(UserContext);
   // loading
   const [loading, setLoading] = useState(false);
   
@@ -42,15 +42,19 @@ const cryptr = new Cryptr('myTotallySecretKey');
 
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_LOCAL}/api/loginuser?email=${email}&password=${password}`
+        `${process.env.NEXT_PUBLIC_LOCAL}/api/loginuser?email=${email}&password=${password}&siteurl=${siteId.siteurl}`
       )
       .then((res) => {
         setSiteUser(res.data);
         setLoading(false);
         setLoginError("");
-        setBtnText("Login Success");
+        setLoginError(res?.data?.message);
+       console.log(res.data,'user')
         Cookies.set('email',cryptr.encrypt(res?.data?.email))
-        router.push(`/${siteId?.siteurl}`)
+        if(res?.data?.id){
+          router.push(`/${siteId?.siteurl}`)
+          setBtnText("Login Success");
+        }
       })
       .catch((err) => {
         setLoading(false);

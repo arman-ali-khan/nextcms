@@ -53,6 +53,7 @@ app.post("/api/users", (req, res) => {
               date: user.createdAt,
               type:'admin',
               uid:user.uid,
+              siteurl: user.siteurl,
             },
             (error, userResult) => {
               if (error) throw error;
@@ -95,11 +96,16 @@ app.post("/api/siteUsers", (req, res) => {
 // Read user by email
 app.get("/api/siteuser", (req, res) => {
   const email = req.query.email;
+  const siteurl = req.query.siteurl;
   connection.query(
-    `SELECT * FROM siteusers WHERE email = ${JSON.stringify(email)}`,
+    `SELECT * FROM siteusers WHERE email = ${JSON.stringify(email)} AND siteurl = ${JSON.stringify(siteurl)}`,
     (error, results) => {
       if (error) throw error;
-      res.json(results[0]);
+      if(results.length){
+        return res.json(results[0]);
+      }else{
+        return res.status(401).send({message:'Email Not Found'})
+      }
     }
   );
 });
@@ -122,9 +128,10 @@ app.get("/api/getsiteurl", (req, res) => {
 app.get("/api/loginuser", (req, res) => {
   const email = req.query.email;
   const password = req.query.password;
-  console.log(req.query);
+  const siteurl = req.query.siteurl
+  // 
   connection.query(
-    `SELECT * FROM siteusers WHERE email = ${JSON.stringify(email)}`,
+    `SELECT * FROM siteusers WHERE email = ${JSON.stringify(email)} AND siteurl = ${JSON.stringify(siteurl)}`,
     (error, results) => {
       if (error) throw error;
       const result = results[0];
@@ -148,7 +155,19 @@ app.get("/api/site", (req, res) => {
   const id = req.query.uid;
   console.log(id);
   connection.query(
-    `SELECT * FROM sites WHERE siteurl = ${JSON.stringify(id)}`,
+    `SELECT * FROM sites WHERE uid = ${JSON.stringify(id)}`,
+    (error, results) => {
+      if (error) throw error;
+      res.json(results[0]);
+    }
+  );
+});
+
+// Read site siteurl
+app.get("/api/siteurl", (req, res) => {
+  const siteurl = req.query.siteurl;
+  connection.query(
+    `SELECT * FROM sites WHERE siteurl = ${JSON.stringify(siteurl)}`,
     (error, results) => {
       if (error) throw error;
       res.json(results[0]);

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useContext } from "react";
 
 const MainNavbar = () => {
-  const {logOut,user,siteId} = useContext(UserContext)
+  const {logOut,user,siteId,userId} = useContext(UserContext)
     return (
         <div>
             <div className="navbar text-black bg-base-100 border-b">
@@ -29,7 +29,7 @@ const MainNavbar = () => {
   <div className="navbar-center  lg:flex">
     <ul className="menu menu-horizontal px-1">
     {
-      user?.email ? <li><Link href={`/${siteId?.siteurl}`} target="_blank">My Site</Link></li>:''
+      user?.email ? <li><Link href={`/${userId?.siteurl}`} target="_blank">My Site</Link></li>:''
     }
      
     </ul>
